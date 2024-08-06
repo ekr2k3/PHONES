@@ -1,0 +1,7 @@
+mixin search(keyw)
+    form(action="", id="form-search")
+        .input-group
+            input(type="text", placeholder="Nhập từ khóa", name="keyword", class="form-control", value = keyw)
+            .input-group-append
+                button(class="btn btn-success" type="submit") Tìm
+    script(src="/admin/js/search.js") 

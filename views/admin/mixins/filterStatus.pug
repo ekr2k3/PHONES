@@ -1,0 +1,4 @@
+mixin Filter-Status(buttons)
+    -for(var i = 0; i< buttons.length; i++)
+        button(class="btn btn-sm ml-1 btn-outline-success" + "  " + buttons[i].Action, Sta= buttons[i].status) #{buttons[i].Option}
+    script(src="/admin/js/status.js")

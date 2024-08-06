@@ -1,0 +1,22 @@
+extends ../../layouts/default.pug
+
+block main
+    if(messages.error)
+        h2= messages.error
+    //- .container.my-3 tương đương div(class="container my-3")
+    .container.my-3
+        .row
+            .box-head 
+                h2.inner-title Danh sách sản phẩm
+        .row 
+            -for(var i = 0; i<data.length; i++)
+                .col-4.mb-3 
+                    .product-item 
+                        .inner-image 
+                            img(src=data[i].thumbnail, alt="img")
+                        .inner-content 
+                            a(href="/products/detail/"+data[i].slug_tu_dinh_nghia_ten_khac)
+                                h3.inner-title #{data[i].title}  
+                            .inner-price-new #{data[i].priceNew}$
+                            .inner-price-ole #{data[i].price}$
+                            .inner-discount #{data[i].discountPercentage}%

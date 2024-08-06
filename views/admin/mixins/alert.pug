@@ -1,0 +1,5 @@
+mixin alert-flash(key)
+    if(key)
+        div(class="alert alert-success" id="flash") #{key}
+    if(key)
+        script(src="/admin/js/alert.js")

@@ -1,0 +1,15 @@
+extends ../../layouts/default.pug
+block main
+    if(data.title)
+        h2 #{data.title}
+    if(data.price)
+        h2 Giá: #{data.price}
+    if(data.stock)
+        h2 Số lượng: #{data.stock}
+    if(data.discountPercentage)
+        h2 % giảm giá: #{data.discountPercentage}
+    if(data.thumbnail)
+        img(src=data.thumbnail, alt="", style="width:10vw; height:auto;")
+    if(data.status)
+        h2 Trạng thái: #{data.status}
+    

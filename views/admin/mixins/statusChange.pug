@@ -1,0 +1,38 @@
+mixin formChangeOneStatus(path)
+    form(action="", method="post", prefix = path, id="form-change")
+
+
+mixin script_Chan(url_1,url_n)
+    script(src=url_1)
+    script(src=url_n)
+
+mixin formChangeManyStatus(path)
+    form(id="form-change-mutil-status", method="post", action= path )
+                .d-flex.align-items-start 
+                    .form-group 
+                        select(name="option", class="form-select")
+                            option(value="active") Hoạt Động
+                            option(value="inactive") Dung Hoat Dong
+                            option(value="delete") xóa
+                            option(value="position") Thay đổi vị trí 
+                    .form-group 
+                        input(type="text", name="listID", class="form-control", style="display:none;")
+                        input(type="text", name="listPosition", class="form-control", style="display:none;")
+                    button(type="submit", class="btn btn-info") Áp dụng
+mixin checkALL()
+    th 
+        div(class="form-check form-switch")
+            input(name="checkAll", class="form-check-input" type="checkbox" id="flexSwitchCheckDefault")
+            label(class="form-check-label" for="flexSwitchCheckDefault") Chọn Tất Cả Sản Phẩm Trên Trang
+
+mixin checkProducts(data)
+    td
+        div(class="form-check form-switch")
+            input(name="checkProducts", class="form-check-input" type="checkbox", value=data[i].id,  position = data[i].position)
+
+mixin changeOneStatus(data)
+    td 
+        if(data[i].status == "active")
+            a(href="#" class="badge bg-success", id=data[i].id, status = "active") Hoạt động
+        else
+            a(href="#" class="badge bg-danger", id=data[i].id, status = "inactive") Dừng hoạt động

@@ -1,0 +1,44 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+block main
+    +alert-flash(messages.error)
+    form(action="", method="post", enctype="multipart/form-data", id=dataOld[0]._id, class="unique" prefix = prefix)
+        .mb-3 
+            lable(for="f1",  class="form-label") Tên sản phẩm
+            input(type="text", name="titile" , id="f1", class="form-control", value=dataOld[0].title)
+        .mb-3
+            label(for="f2", class="form-label") Miêu tả
+            textarea(name="description", id="f2", class="form-control") #{dataOld[0].description}
+        .mb-3 
+            label(for="f3", class="form-label") Giá
+            input(type="text", name="price", id="f3", class="form-control", value=dataOld[0].price)
+        .mb-3 
+            label(for="f4", class="form-label") % giảm giá
+            input(type="text", name="discountPercentage", id="f4", class="form-control", value=dataOld[0].discountPercentage)
+        .mb-3 
+            label(for="f5", class="form-label") Số lượng
+            input(type="text", name="stock", id="f5", class="form-control", value=dataOld[0].stock)
+        .mb-3 
+            label(for="f6", class="form-label") Ảnh
+            input(type="file", name="thumbnail", id="f6", class="form-control", accept="image/*")
+            img(src=dataOld[0].thumbnail, alt="", id="preview", style="width: 7vw; height:auto; margin-top:10px;")
+        .mb-3 
+            label(for="f7", class="form-label") Vị trí
+            input(type="text", name="position", placeholder="Vị trí tăng tự động" ,id="f7", class="form-control", value=dataOld[0].position)
+        .form-check.form-check-inline
+            if(dataOld[0].status === "active")
+                input(type="radio", name="status", class="form-check-input", value="active", id="f8",, checked=true)
+            else
+                input(type="radio", name="status", class="form-check-input", value="active", id="f8",, checked=false)
+            label(for="f8", class="form-check-label") Hoạt động
+            
+        .form-check.form-check-inline
+            if(dataOld[0].status === "inactive")
+                input(type="radio", name="status", class="form-check-input", value="inactive", id="f9",checked=true)
+            else
+                input(type="radio", name="status", class="form-check-input", value="inactive", id="f9",checked=false)
+            label(for="f9", class="form-check-label") Dừng hoạt động
+        .mb-3
+            button(type="submit", class="btn btn-primary") Cập nhập
+    script(src="/admin/js/preview-an-image.js")
+    script(src="/admin/js/edit-Item.js") 

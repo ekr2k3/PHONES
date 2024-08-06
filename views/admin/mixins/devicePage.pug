@@ -1,0 +1,14 @@
+mixin pages(NumberP,NowPage)
+    ul.pagination
+        li(class="page-item")
+            button(class="page-link") Trang trước
+        -for(var i = 0 + 1; i<NumberP + 1; i++)
+            if(NowPage === i)
+                li(class="page-item active")
+                    button(class="page-link" , pageNumber = i) #{i}
+            else
+                li(class="page-item")
+                    button(class="page-link" , pageNumber = i) #{i}
+        li(class="page-item")
+            button(class="page-link") Trang sau
+    script(src="/admin/js/devicePage.js")

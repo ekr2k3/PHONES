@@ -1,0 +1,39 @@
+.header{
+    border-bottom: 1px solid;
+    padding: 5px;
+    background: black;
+}
+
+.header .inner-menu ul{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    list-style: none;
+}
+.header .inner-menu a{
+    text-decoration: none;
+    color: white;
+}
+.header .inner-menu ul li{
+    margin-left: 20px;
+}
+
+.header .inner-logo img{
+    width:50%;
+}
+/* footer */
+.footer{
+    background: black;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.inner-content a{
+    text-decoration: none;
+}
+.inner-image img{
+    width: 10vw;
+    height:auto;
+}
+

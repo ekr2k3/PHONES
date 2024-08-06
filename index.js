@@ -8,7 +8,8 @@ const flash = require("express-flash");
 
 require("dotenv").config();
 const app = express();
-app.use(express.urlencoded({extended:false}));
+//app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.use(methodOverride('_method'));
 
 app.use(cookieParser("ABC")); // Giá trị truyền vào là tự chọn

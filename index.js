@@ -30,14 +30,20 @@ app.use(express.static(`${__dirname}/public`));
 
 configDataBase();
 
-
 var prefix = require("./system").prefix;
 app.locals.prefix = prefix;
 
+
+var path = require("path");
+app.locals.pathDot = "    . = " + path.resolve(".");
+app.locals.pathDirname = " __dirname = " + path.resolve(__dirname);
+app.locals.now =  "     process.cwd()= " + process.cwd();
+app.locals.dirname = "   __dirname"    + __dirname;
+
+
 useRouter(app);
 useRouterAdmin(app);
-app.locals.now = process.cwd();
-app.locals.dirname = __dirname;
+
 app.listen(port, ()=>{
     console.log("server run by port: " + port);
 });

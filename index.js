@@ -35,7 +35,7 @@ var prefix = require("./system").prefix;
 app.locals.prefix = prefix;
 var path = require("path");
 app.locals.pathDot = ". = " + path.resolve(".");
-app.locals.pathDirname"__dirname = " + path.resolve(__dirname);
+app.locals.pathDirname = "__dirname = " + path.resolve(__dirname);
 useRouter(app);
 useRouterAdmin(app);
 app.locals.now = process.cwd();

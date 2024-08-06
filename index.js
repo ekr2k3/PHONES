@@ -33,19 +33,14 @@ configDataBase();
 
 const path = require('path');
 
-// Đường dẫn tương đối
-const relativePath = 'views';
-
-// Chuyển đổi thành đường dẫn tuyệt đối
-const absolutePath = path.resolve(relativePath);
 
 var prefix = require("./system").prefix;
 app.locals.prefix = prefix;
 
 useRouter(app);
 useRouterAdmin(app);
-app.locals.now = absolutePath;
-app.locals.dirname = __dirname + "/views";
+app.locals.now = process.cwd();
+app.locals.dirname = __dirname;
 app.listen(port, ()=>{
     console.log("server run by port: " + port); 
 });

@@ -31,9 +31,6 @@ app.use(express.static(`${__dirname}/public`));
 
 configDataBase();
 
-const path = require('path');
-
-
 var prefix = require("./system").prefix;
 app.locals.prefix = prefix;
 var path = require("path");

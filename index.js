@@ -25,7 +25,7 @@ const useRouter = require("./routers/client/index.router");
 const useRouterAdmin = require("./routers/admin/index.router");
 
 
-app.set("views", "/var/task/views");
+app.set("views", "${__dirname}/views");
 app.set("view engine", "pug");
 app.use(express.static(`${__dirname}/public`));
 
@@ -33,13 +33,18 @@ configDataBase();
 
 var prefix = require("./system").prefix;
 app.locals.prefix = prefix;
+
+
 var path = require("path");
 app.locals.pathDot = "    . = " + path.resolve(".");
 app.locals.pathDirname = " __dirname = " + path.resolve(__dirname);
-useRouter(app);
-useRouterAdmin(app);
 app.locals.now =  "     process.cwd()= " + process.cwd();
 app.locals.dirname = "   __dirname"    + __dirname;
+
+
+useRouter(app);
+useRouterAdmin(app);
+
 app.listen(port, ()=>{
     console.log("server run by port: " + port); 
 });

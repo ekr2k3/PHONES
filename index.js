@@ -24,15 +24,10 @@ const useRouter = require("./routers/client/index.router");
 
 const useRouterAdmin = require("./routers/admin/index.router");
 
-<<<<<<< HEAD
+
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 app.use(express.static(`${__dirname}/public`));
-=======
-app.set("views", `/views`);
-app.set("view engine", "pug");
-app.use(express.static(`/public`));
->>>>>>> 794daaaf2944638c5be0c9601f6c43430d7ff99e
 
 configDataBase();
 
@@ -45,11 +40,5 @@ useRouterAdmin(app);
 app.locals.now = process.cwd();
 app.locals.dirname = __dirname;
 app.listen(port, ()=>{
-    console.log("server run by port: " + port);
-<<<<<<< HEAD
-    
+    console.log("server run by port: " + port); 
 });
-=======
-    console.log("here is __dirname:  " + __dirname);
-});
->>>>>>> 794daaaf2944638c5be0c9601f6c43430d7ff99e

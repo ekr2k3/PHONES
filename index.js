@@ -24,9 +24,9 @@ const useRouter = require("./routers/client/index.router");
 
 const useRouterAdmin = require("./routers/admin/index.router");
 
-app.set("views", `views`);
+app.set("views", `/views`);
 app.set("view engine", "pug");
-app.use(express.static(`public`));
+app.use(express.static(`/public`));
 
 configDataBase();
 

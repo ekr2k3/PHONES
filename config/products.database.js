@@ -4,7 +4,7 @@ module.exports = async ()=>{
     try {
         await mongoose.connect(process.env.mongoDB);
         console.log("Success for connect database");
-        console.log("here is __dirname in config:  " + __dirname);
+        console.log("database in config:" + process.cwd());
     } catch (error) {
         console.log(error);
     }

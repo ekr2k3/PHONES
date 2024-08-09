@@ -2,6 +2,32 @@ const modelPro = require("./../../models/products.model");
 
 const filterStatus = require("../../helpers/filterStatus");
 const search = require("../../helpers/search");
+/////////////////////////////////////////////////////////////////////////////
+var option = {
+    resource_type: 'auto'
+};
+var cloudinary = require("cloudinary").v2;
+var upLoadToCloud = (buffer) => {
+    var myPromise = new Promise((res, rej) => {
+        //2. thực hiện đạn này sau khi có true or false
+        var cb = (error, result) => {
+            // SAU KHI VÀO ĐÂY <=> CODE TRẢ VỀ TRUE OR FALSE
+            if (error) {
+                console.error('Upload failed:', error);
+                rej(error);
+            } else {
+                console.log('Upload successful:', result);
+                res(result);
+            }
+        }
+        //1. chạy vô đây trước để làm gì đó trả true or false
+        const uploadStream = cloudinary.uploader.upload_stream(option, cb);
+        uploadStream.end(buffer);
+    });
+    return myPromise;
+}
+////////////////////////////////////////////////////////////////////////
+
 module.exports.productsAdmin = async (req, res) => {
     var condition = {
         deleted: false
@@ -123,30 +149,32 @@ module.exports.creatGET = (req, res) => {
     res.render("admin/pages/products/createPage.pug")
 }
 
-module.exports.createPost = async (req, res) => {
-    var newData = {
-        price: parseInt(req.body.price),
-        title: req.body.titile,
-        status: req.body.status,
-        discountPercentage: parseFloat(req.body.discountPercentage),
-        thumbnail: "/uploads/" + req.files.thumbnail[0].filename,
-        stock: parseInt(req.body.stock),
-        description: req.body.description
-    }
-    if (req.body.position === "") {
-        var count = await modelPro.find();
-        newData.position = count.length + 1;
-    }
-    else {
-        newData.position = parseInt(req.body.position)
-    }
-    // hoàn thành lấy data
-
-    var newItem = new modelPro(newData);
-    await newItem.save();
-    res.redirect("/admin/products")
+module.exports.createPost = (req, res) => {
+    var myPromiseUpload = upLoadToCloud(req.files.thumbnail[0].buffer);
+    myPromiseUpload
+        .then(async (result) => {
+            var newData = {
+                price: parseInt(req.body.price),
+                title: req.body.titile,
+                status: req.body.status,
+                discountPercentage: parseFloat(req.body.discountPercentage),
+                thumbnail: result.url,
+                stock: parseInt(req.body.stock),
+                description: req.body.description
+            }
+            if (req.body.position === "") {
+                var count = await modelPro.find();
+                newData.position = count.length + 1;
+            }
+            else {
+                newData.position = parseInt(req.body.position)
+            }
+            // hoàn thành lấy data
+            var newItem = new modelPro(newData);
+            await newItem.save();
+            res.redirect("/admin/products")
+        })
 }
-
 module.exports.editGET = async (req, res) => {
     var id = req.params.id;
     var condition = {
@@ -162,7 +190,7 @@ module.exports.editGET = async (req, res) => {
             dataOld: data
         })
     } catch (error) {
-        req.flash("error","sản phẩm không tồn tại");
+        req.flash("error", "sản phẩm không tồn tại");
         res.redirect("/admin/products");
     }
 }
@@ -178,13 +206,15 @@ module.exports.editPATCH = async (req, res) => {
         position: parseInt(req.body.position)
     }
     if (req.files.thumbnail !== undefined) {
-        newData.thumbnail = "/uploads/" + req.files.thumbnail[0].filename;
-    }// check có file không tức có điền thay đổi cho file thì mới có
-    //còn nếu không thay thì không có
-    await modelPro.updateOne({ _id: id }, newData);
-    res.redirect("/admin/products");
+        var myPromiseUpload = upLoadToCloud(req.files.thumbnail[0].buffer);
+        myPromiseUpload.then(async (result) => {
+            newData.thumbnail = result.url;
+            await modelPro.updateOne({ _id: id }, newData);
+            res.redirect("/admin/products");
+        })
+    }
 }
-module.exports.detail = async (req,res)=>{
+module.exports.detail = async (req, res) => {
     var id = req.params.id;
     var condition = {
         deleted: false,
@@ -192,7 +222,7 @@ module.exports.detail = async (req,res)=>{
     }
     try {
         var Data = await modelPro.findOne(condition);
-        res.render("admin/pages/products/detail.pug",{
+        res.render("admin/pages/products/detail.pug", {
             data: Data
         });
     } catch (error) {

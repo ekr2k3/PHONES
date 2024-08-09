@@ -1,20 +1,10 @@
 var express = require("express");
 var rou = express.Router();
 var multer = require("multer");
-
-var uploads = multer({
-    storage: multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, "public/uploads");
-        },
-        filename: (req, file, cb) => {
-            var uniqueID = Date.now();
-            cb(null, uniqueID + " - " + file.originalname);
-        }
-    })
-});
-
 var productsController = require("../../controllers/admin/products.controller");
+var checkValidateProducts = require("../../validate/admin/products.validate");
+/////////////////////////////////////////////////////////////////////////////////////////
+var uploads = multer();
 var getFile = uploads.fields(
     [
         {
@@ -25,6 +15,7 @@ var getFile = uploads.fields(
 
 )
 
+/////////////////////////////////////////////////////////////////////////////////////
 rou.get("/", productsController.productsAdmin);
 
 rou.patch("/change-status/:status/:id", productsController.ChangeStatus);
@@ -38,8 +29,6 @@ rou.get("/trap", productsController.trap);
 rou.delete("/fromTrap/:id/:order", productsController.orderFromTrap);
 
 rou.get("/create", productsController.creatGET);
-
-var checkValidateProducts = require("../../validate/admin/products.validate");
 
 rou.post("/create", getFile, checkValidateProducts.create, productsController.createPost);
 

@@ -70,7 +70,7 @@ block main
                                     if(role.permissions.includes("DSSP_XEM"))
                                         a(href=prefix + "/products/detail/" + data[i]._id, class="btn btn-secondary") Chi tiết
                                 if(role.permissions.includes("DSSP_SUA"))
-                                    if(role.permissions.includes("DSSP_SUA"))
+                                    +checkProducts(data)
         +pages(NumberP,NowPage)
         +formChangeOneStatus(prefix)
         +script_Chan("/admin/js/change-status.js","/admin/js/change-mutil-status.js")

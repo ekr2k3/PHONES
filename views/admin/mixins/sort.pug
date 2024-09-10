@@ -1,0 +1,13 @@
+mixin sort()
+    .card.mb-3
+        .card-body
+            select(name="sort")
+                option(value="", hidden) --Chọn kiểu sắp xếp--
+                option(value="position-d") Vị trí giảm dần
+                option(value="position-a")  Vị trí tăng dần
+                option(value="price-d") Giá giảm dần
+                option(value="price-a") Giá tăng dần  
+                option(value="default-default") Mặc định
+                option(value="alphabet-d") Z-A
+                option(value="alphabet-a") A-Z 
+        script(src="/admin/js/sort.js") 

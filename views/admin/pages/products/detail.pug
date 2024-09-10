@@ -1,15 +1,23 @@
 extends ../../layouts/default.pug
 block main
-    if(data.title)
-        h2 #{data.title}
-    if(data.price)
-        h2 Giá: #{data.price}
-    if(data.stock)
-        h2 Số lượng: #{data.stock}
-    if(data.discountPercentage)
-        h2 % giảm giá: #{data.discountPercentage}
-    if(data.thumbnail)
-        img(src=data.thumbnail, alt="", style="width:10vw; height:auto;")
-    if(data.status)
-        h2 Trạng thái: #{data.status}
-    
+    if(role.permissions.includes("DSSP_XEM"))
+        if(data.title)
+            h2 #{data.title}
+        if(data.price)
+            h2 Giá: #{data.price}
+        if(data.stock)
+            h2 Số lượng: #{data.stock}
+        if(data.discountPercentage)
+            h2 % giảm giá: #{data.discountPercentage}
+        if(data.thumbnail)
+            img(src=data.thumbnail, alt="", style="width:10vw; height:auto;")
+        if(data.status)
+            h2 Trạng thái: #{data.status}
+        if(data.description)
+            p !{data.description}
+        if(data.Type)
+            -for(var i = 0; i<dataType.length; i++){
+                -if(data.Type === dataType[i]._id.toString()){
+                    h2 Sản phẩm thuộc danh mục : #{dataType[i].title}
+                -}
+            -}

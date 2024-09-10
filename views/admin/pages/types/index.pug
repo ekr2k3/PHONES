@@ -1,0 +1,48 @@
+extends ../../layouts/default.pug
+include ../../mixins/statusChange.pug
+block main
+    a(href="/admin/type/create" class="btn btn-primary") Thêm
+
+    .card.mb-3 
+        .card-header Danh sách danh sản phẩm
+        .card-body
+            table.table.table-hover.table-sm 
+                thead 
+                    tr 
+                        th Stt
+                        th Image
+                        th Name
+                        th Vị trí giao diện
+                        th Status
+                        th Action
+                tbody
+                    - var count = 0;
+                    - var traverseTree = (node, space)=>{
+                        -count+=1;
+                        tr
+                            //- trường stt
+                            td #{count} 
+                            td 
+                                img(src=node.thumbnail alt = node.title width="100px" height="auto")
+                            td  #{space}   #{node.title}
+                            td
+                                input(type="number",  value=node.position, position = node.position)
+                            td
+                                if(node.status == "active")
+                                    a(href="#" class="badge bg-success", id=node.id, status = "active") Hoạt động
+                                else
+                                    a(href="#" class="badge bg-danger", id=node.id, status = "inactive") Dừng hoạt động
+                            td 
+                                button(class="btn btn-danger", delete-button, id=node._id) xoa 
+                                a(class="btn btn-warning", edit-button, id=node._id, href="/admin/type/edit/"+node._id) sua
+                                a(href="#" + node._id, class="btn btn-secondary") Chi tiết
+                        -space+="-";
+                        -for(var i = 0; i<node.child.length; i++){
+                            -traverseTree(node.child[i], space)
+                        -}
+                    -}
+                    -for(var i = 0; i<d.length; i++){
+                        -if(d[i].parent_id === ""){
+                            -traverseTree(d[i], "", 1);
+                        -}
+                    -}

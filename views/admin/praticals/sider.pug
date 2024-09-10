@@ -3,8 +3,18 @@ sider.sider
         ul
             li
                 a(href=prefix + "/dashboard") Tổng quan
+            if(role.permissions.includes("DSSP_XEM"))
+                li
+                    a(href=prefix + "/products") Sản phẩm
             li
-                a(href=prefix + "/products") Sản phẩm
+                a(href=prefix + "/type") Danh mục sản phẩm
+            li
+                a(href=prefix + "/role") Danh sách nhóm quyền
+            if(role.permissions.includes("PQ_XEM"))
+                li
+                    a(href=prefix + "/role/permission") Phân quyền
+            li
+                a(href=prefix + "/accounts") Danh sách tài khoản
             li
                 a(href=prefix+"/products/trap")
                     i(class="fa-solid fa-trash fa-beat fa-sm" style="color: #63E6BE;")

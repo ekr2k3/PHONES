@@ -1,0 +1,37 @@
+extends ../../layouts/default.pug
+
+block main
+    a(href="/admin/accounts/create" class="btn btn-primary") Thêm 
+    .card.mb-3 
+        .card-header Danh sách tài khoản
+        .card-body
+            table.table.table-hover.table-sm 
+                thead 
+                    tr 
+                        th Stt
+                        th eamil
+                        th Role
+                        th avatar
+                        th Status
+                        th Action
+                tbody
+                    -for(var i = 0; i < d.length; i++)
+                        tr
+                            td #{i+1}
+                            td #{d[i].email}
+                            -for(var j = 0; j< drole.length; j++)
+                                -if(d[i].role_id === drole[j]._id.toString())
+                                    td    #{drole[j].title}
+                            -if(drole.length === 0 )
+                                td    #{d[i].role_id}
+                            td
+                                img(src=d[i].avata, alt ="avatar", width="100px", height="auto")
+                            td 
+                                if(d[i].status == "active")
+                                    a(href="#" class="badge bg-success", id=d[i].id, status = "active") Hoạt động
+                                else
+                                    a(href="#" class="badge bg-danger", id=d[i].id, status = "inactive") Dừng hoạt động
+                            td
+                                button(class="btn btn-danger", delete-button, id=d[i]._id) xoa 
+                                a(class="btn btn-warning", edit-button, id=d[i]._id , href="/admin/accounts/edit/" + d[i]._id) sua
+                                a(href="#", class="btn btn-secondary") Chi tiết

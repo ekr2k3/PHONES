@@ -5,61 +5,76 @@ include ../../mixins/search.pug
 include ../../mixins/devicePage.pug
 include ../../mixins/statusChange.pug
 include ../../mixins/alert.pug
+include ../../mixins/sort.pug
 block main
-    +alert-flash(messages.changeStatus)
-    +alert-flash(messages.delete)
-    +alert-flash(messages.position)
-    +alert-flash(messages.changeInactive)
-    +alert-flash(messages.changeActive)
-    +alert-flash(messages.error)
-    .card.mb-3 
-        .card-header Bo loc Tim kiem 
-        .card-body
-            .row
-                .col-6
-                    +Filter-Status(buttons)
-                .col-6 
-                    +search(keyw)
-    .card.mb-3 
-        .card-header Danh sách sản phẩm
-        .card-body
-            .row
-                .col-10
-                    +formChangeManyStatus(`${prefix}/products/change-mutil-status?_method=PATCH`)
-                .col-2
-                    a(href=prefix+"/products/create", class="btn btn-info") + Thêm mới
-            table.table.table-hover.table-sm 
-                thead 
-                    tr 
-                        th Stt
-                        th Image
-                        th Name
-                        th Price
-                        th Vị trí giao diện
-                        th Status
-                        th Action
-                        +checkALL()
-                tbody 
-                    -for(var i = 0; i<data.length; i++)
+    if(role.permissions.includes("DSSP_XEM"))
+        +alert-flash(messages.changeStatus)
+        +alert-flash(messages.delete)
+        +alert-flash(messages.position)
+        +alert-flash(messages.changeInactive)
+        +alert-flash(messages.changeActive)
+        +alert-flash(messages.error)
+        .card.mb-3 
+            .card-header Bo loc Tim kiem 
+            .card-body
+                .row
+                    .col-6
+                        +Filter-Status(buttons)
+                    .col-6 
+                        +search(keyw)
+        if(role.permissions.includes("DSSP_SUA"))
+            +sort()
+        .card.mb-3 
+            .card-header Danh sách sản phẩm
+            .card-body
+                .row
+                    .col-10
+                        if(role.permissions.includes("DSSP_SUA"))
+                            +formChangeManyStatus(`${prefix}/products/change-mutil-status?_method=PATCH`)
+                    .col-2
+                        if(role.permissions.includes("DSSP_TTHEM"))
+                            a(href=prefix+"/products/create", class="btn btn-info") + Thêm mới
+                table.table.table-hover.table-sm 
+                    thead 
                         tr 
-                            td #{i+1}
-                            td 
-                                img(src=data[i].thumbnail alt = data[i].title width="100px" height="auto")
-                            td #{data[i].title}
-                            td #{data[i].price}
-                            td
-                                input(type="number",  value=data[i].position, position = data[i].position)
-                                input(type="number",  value=data[i].index)
-                            +changeOneStatus(data)
-                            td 
-                                button(class="btn btn-danger", delete-button, id=data[i]._id) xoa 
-                                button(class="btn btn-warning", edit-button, id=data[i]._id) sua
-                                a(href=prefix + "/products/detail/" + data[i]._id, class="btn btn-secondary") Chi tiết
-                            +checkProducts(data)
-    +pages(NumberP,NowPage)
-    +formChangeOneStatus(prefix)
-    +script_Chan("/admin/js/change-status.js","/admin/js/change-mutil-status.js")
-    form(action="", method="post", prefix = prefix, id="form-delete")
-    form(action="", method="get", prefix = prefix, id="form-edit")
-    script(src="/admin/js/delete.js")
-    script(src="/admin/js/edit-Item.js")
+                            th Stt
+                            th Image
+                            th Name
+                            th Price
+                            th Vị trí giao diện
+                            th Status
+                            th Action
+                            if(role.permissions.includes("DSSP_SUA"))
+                                +checkALL()
+                    tbody 
+                        -for(var i = 0; i<data.length; i++)
+                            tr 
+                                td #{i+1}
+                                td
+                                    if(data[i].title !="Lúa mì")
+                                        img(src=data[i].thumbnail alt = data[i].title width="100px" height="auto")
+                                    else
+                                        video(src=data[i].thumbnail controls style="width:100px; height:auto;")
+                                td #{data[i].title}
+                                td #{data[i].price}
+                                td
+                                    if(role.permissions.includes("DSSP_SUA"))
+                                        input(type="number",  value=data[i].position, position = data[i].position)
+                                        input(type="number",  value=data[i].index)
+                                +changeOneStatus(data)
+                                td 
+                                    if(role.permissions.includes("DSSP_XOA"))
+                                        button(class="btn btn-danger", delete-button, id=data[i]._id) xoa 
+                                    if(role.permissions.includes("DSSP_SUA"))
+                                        button(class="btn btn-warning", edit-button, id=data[i]._id) sua
+                                    if(role.permissions.includes("DSSP_XEM"))
+                                        a(href=prefix + "/products/detail/" + data[i]._id, class="btn btn-secondary") Chi tiết
+                                if(role.permissions.includes("DSSP_SUA"))
+                                    if(role.permissions.includes("DSSP_SUA"))
+        +pages(NumberP,NowPage)
+        +formChangeOneStatus(prefix)
+        +script_Chan("/admin/js/change-status.js","/admin/js/change-mutil-status.js")
+        form(action="", method="post", prefix = prefix, id="form-delete")
+        form(action="", method="get", prefix = prefix, id="form-edit")
+        script(src="/admin/js/delete.js")
+        script(src="/admin/js/edit-Item.js")

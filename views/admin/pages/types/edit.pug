@@ -1,0 +1,58 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+block main
+    +alert-flash(messages.error)
+    form(action="/admin/type/edit/" + d._id +"?_method=PATCH", method="post", enctype="multipart/form-data")
+        .mb-3 
+            lable(for="f1",  class="form-label") Tên sản phẩm
+            input(type="text", name="titile" , id="f1", class="form-control", value=d.title)
+        .mb-3 
+            lable(for="f10",  class="form-label") Danh mục cha
+            select(name="parent_id", id="f10")
+                option(value="", hidden, selected) --Chọn danh mục cha-- 
+                - var traverseTree = (node, space)=>{
+                    -if(node._id.toString() === d.parent_id){
+                        option(value=`${node._id}`, selected) #{space} #{node.title}
+                        -console.log("---------------------------");
+                        -console.log(node._id, d._id);
+                        -console.log(node._id.toString(), d._id.toString());
+                        -console.log("---------------------------");
+                    -}
+                    -else{
+                        option(value=`${node._id}`) #{space} #{node.title}
+                        -console.log(node._id, d._id);
+                    -}
+                    -space+="-";
+                    -for(var i = 0; i<node.child.length; i++){
+                        -traverseTree(node.child[i], space)
+                    -}
+                -}
+                -for(var i = 0; i<aD.length; i++){
+                    -if(aD[i].parent_id === "")
+                        -traverseTree(aD[i], "");
+                -}
+        .mb-3
+            label(for="f2", class="form-label") Miêu tả
+            textarea(name="description", id="f2", class="form-control") #{d.description}
+        .mb-3 
+            label(for="f6", class="form-label") Ảnh
+            input(type="file", name="thumbnail", id="f6", class="form-control", accept="image/*")
+            img(src=d.thumbnail, alt="", id="preview", style="width: 7vw; height:auto; margin-top:10px;")
+        .mb-3 
+            label(for="f7", class="form-label") Vị trí
+            input(type="text", name="position", placeholder="Vị trí tăng tự động" ,id="f7", class="form-control", value=d.position)
+        .form-check.form-check-inline
+            if(d.status === "active")
+                input(type="radio", name="status", class="form-check-input", value="active", id="f8", checked)
+            else
+                input(type="radio", name="status", class="form-check-input", value="active", id="f8")
+            label(for="f8", class="form-check-label") Hoạt động
+        .form-check.form-check-inline
+            if(d.status === "inactive")
+                input(type="radio", name="status", class="form-check-input", value="inactive", id="f9", checked)
+            else
+                input(type="radio", name="status", class="form-check-input", value="inactive", id="f9")
+            label(for="f9", class="form-check-label") Dừng hoạt động
+        .mb-3
+            button(type="submit", class="btn btn-primary") Cập nhập
+    script(src="/admin/js/preview-an-image.js")

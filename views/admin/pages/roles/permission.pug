@@ -1,0 +1,128 @@
+extends ../../layouts/default.pug
+block main
+    if(role.permissions.includes("PQ_XEM"))
+        .card.mb-3 
+            .card-header Phân quyền
+            .card-body
+                table.table.table-hover.table-sm 
+                    thead 
+                        tr 
+                            th Các mục quyền
+                            -for(var i = 0; i<d.length; i++)
+                                th(id=d[i]._id) #{d[i].title}
+                    tbody
+                        tr
+                            td
+                                h5 Danh sách sản phẩm
+                        tr
+                            td Thêm
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSSP_TTHEM", x=d[i]._id)
+                        tr
+                            td Sửa
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSSP_SUA", x=d[i]._id)
+                        tr
+                            td xóa
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSSP_XOA", x=d[i]._id)
+                        tr
+                            td xem
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSSP_XEM", x=d[i]._id)
+                    tbody
+                        tr
+                            td 
+                                h5 Danh sách danh mục sản phẩm
+                        tr
+                            td Thêm
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSDMSP_THEM", x=d[i]._id)
+                        tr
+                            td Sửa
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSDMSP_SUA", x=d[i]._id)
+                        tr
+                            td xóa
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSDMSP_XOA", x=d[i]._id)
+                        tr
+                            td xem
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSDMSP_XEM", x=d[i]._id)
+                    tbody
+                        tr
+                            td 
+                                h5 Nhóm quyền
+                        tr
+                            td Thêm
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="NQ_THEM", x=d[i]._id)
+                        tr
+                            td Sửa
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="NQ_SUA", x=d[i]._id)
+                        tr
+                            td xóa
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="NQ_XOA", x=d[i]._id)
+                        tr
+                            td xem
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="NQ_XEM", x=d[i]._id)
+                        tbody
+                        tr
+                            td 
+                                h5 Danh sách tài khoản
+                        tr
+                            td Thêm
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSTK_THEM", x=d[i]._id)
+                        tr
+                            td Sửa
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSTK_SUA", x=d[i]._id)
+                        tr
+                            td xóa
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSTK_XOA", x=d[i]._id)
+                        tr
+                            td xem
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="DSTK_XEM", x=d[i]._id)
+                        tbody
+                        tr
+                            td 
+                                h5 Phân quyền
+                        tr
+                            td Xem
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="PQ_XEM", x=d[i]._id)
+                        tr
+                            td Sửa
+                            -for(var i = 0; i<d.length; i++)
+                                td
+                                    input(type="checkbox", name="PQ_SUA", x=d[i]._id)
+        if(role.permissions.includes("PQ_SUA"))
+            button( class="btn btn-primary") click me! to Update
+        form(action="/admin/role/permission/?_method=patch", method="post", id="permission_form")
+            input(type="text", id="permission_input", style="display:none;", name="permission_input")
+        div(id="permission_content" style="display:none") #{d2}
+        script(src="/admin/js/permission.js")   

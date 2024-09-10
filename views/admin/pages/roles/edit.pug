@@ -1,0 +1,11 @@
+extends ../../layouts/default.pug
+block main
+    form(action="/admin/role/edit/"+ d._id + "?_method=PATCH", method="post")
+        .mb-3 
+            lable(for="f1",  class="form-label") Tên nhóm quyền
+            input(type="text", name="titile" , id="f1", class="form-control", value=d.title)
+        .mb-3
+            label(for="f2", class="form-label") Miêu tả
+            textarea(name="description", id="f2", class="form-control")= d.description
+        .mb-3
+            button(type="submit", class="btn btn-primary") Cập nhập

@@ -1,0 +1,46 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    h1 Sửa tài khoản
+    +alert-flash(messages.error)
+    form(action=prefix + "/accounts/edit/" + r._id +"?_method=PATCH", method="post", enctype="multipart/form-data")
+        .mb-3 
+            lable(for="f1",  class="form-label") Họ và tên*
+            input(type="text", name="fullname" , id="f1", class="form-control" value=r.fullname)
+        .mb-3
+            label(for="f2", class="form-label") email
+            input(name="email", id="f2", class="form-control", type="email" value=r.email)
+        .mb-3 
+            label(for="f3", class="form-label") Mật khẩu mới
+            input(type="password", name="password", id="f3", class="form-control" placeholder="Để trống nếu không muốn đổi mật khẩu")
+        .mb-3 
+            label(for="f4", class="form-label") Số điện thoại
+            input(type="text", name="phone", id="f4", class="form-control" value=r.phone)
+        .mb-3 
+            label(for="f6", class="form-label") avatar
+            input(type="file", name="avata", id="f6", class="form-control", accept="image/*")
+            img(src=r.avata, alt="", id="preview", style="width: 7vw; height:auto; margin-top:10px;")
+        .mb-3 
+            label(for="f7", class="form-label") Vai trò (phân quyền)
+            select(name="role_id", id="f7")
+                -for(var i = 0; i<l.length; i++)
+                    if(l[i]._id == r.role_id)
+                        option(value=l[i]._id selected) #{l[i].title}
+                    else
+                        option(value=l[i]._id) #{l[i].title}
+        .form-check.form-check-inline
+            if(r.status === "active")
+                input(type="radio", name="status", class="form-check-input", value="active", id="f8" checked)
+            else
+                input(type="radio", name="status", class="form-check-input", value="active", id="f8")
+            label(for="f8", class="form-check-label") Hoạt động
+        .form-check.form-check-inline
+            if(r.status === "inactive")
+                input(type="radio", name="status", class="form-check-input", value="inactive", id="f9" checked)
+            else
+                input(type="radio", name="status", class="form-check-input", value="inactive", id="f9")
+            label(for="f9", class="form-check-label") Dừng hoạt động
+        .mb-3
+            button(type="submit", class="btn btn-primary") Cập nhập
+    script(src="/admin/js/preview-an-image.js")

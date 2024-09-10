@@ -26,6 +26,7 @@ var upLoadToCloud = (buffer) => {
     });
     return myPromise;
 }
+module.exports.upToCloud = upLoadToCloud;
 ////////////////////////////////////////////////////////////////////////
 
 module.exports.productsAdmin = async (req, res) => {
@@ -35,29 +36,12 @@ module.exports.productsAdmin = async (req, res) => {
     var FILTERSTATUS = filterStatus(req, condition);
     condition = FILTERSTATUS.CONDITION;
     condition = search(req, condition);
-    // var fl = req.flash("changeStatus");
-    // console.log(fl);
 
     var data = await modelPro.find(condition);
     for (var i = 0; i < data.length; i++) {
         data[i].index = i;
     }
-    for (var i = 0; i < data.length - 1; i++) {
-        for (var j = i + 1; j < data.length; j++) {
-            if (data[i].position > data[j].position) {
-                var temp = {};
-                temp = data[j];
-                data[j] = data[i];
-                data[i] = temp;
-            }
-            else if (data[i].position === data[j].position && data[i].index > data[j].index) {
-                var temp = {};
-                temp = data[j];
-                data[j] = data[i];
-                data[i] = temp;
-            }
-        }
-    }
+    var data = require("./../../helpers/sort.js")(req, data);
     var devicePage = require("../../helpers/devicePage")(req, data);
     res.render("admin/pages/products/index", {
         data: devicePage.data,
@@ -144,9 +128,29 @@ module.exports.orderFromTrap = async (req, res) => {
     }
     res.redirect("back")
 }
+var modelType = require("../../models/typeItems.model.js");
+function createTree1(arr) {
+    for (var i = 0; i < arr.length; i++) {
+        arr[i].child = []; // khởi tạo thêm thuộc tính child vào object
+        // với giớ trị là 1 mảng rỗng
+    }
 
-module.exports.creatGET = (req, res) => {
-    res.render("admin/pages/products/createPage.pug")
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = 0; j < arr.length; j++) {
+            if (i != j) {
+                if (arr[i].parent_id == arr[j].id) {
+                    arr[j].child.push(arr[i]);
+                }
+            }
+        }
+    }
+}
+module.exports.creatGET = async (req, res) => {
+    var data = await modelType.find({ deleted: false });
+    createTree1(data);
+    res.render("admin/pages/products/createPage.pug", {
+        d: data
+    });
 }
 
 module.exports.createPost = (req, res) => {
@@ -160,7 +164,8 @@ module.exports.createPost = (req, res) => {
                 discountPercentage: parseFloat(req.body.discountPercentage),
                 thumbnail: result.url,
                 stock: parseInt(req.body.stock),
-                description: req.body.description
+                description: req.body.description,
+                Type: req.body.Type
             }
             if (req.body.position === "") {
                 var count = await modelPro.find();
@@ -183,12 +188,16 @@ module.exports.editGET = async (req, res) => {
     }
     try {
         var data = await modelPro.find(condition);
+        var dataType = await modelType.find({ deleted: false });
+        createTree1(dataType);
         console.log(data);
         // vì lúc in ra là mảng các object tuy chỉ 1 phần tử
         // nhưng bên pug sẽ phải là dataOld[0].Thuộc tính thay vì dataOld.thuộc tính
         res.render("admin/pages/products/edit.pug", {
-            dataOld: data
-        })
+            dataOld: data,
+            dataType: dataType
+
+        });
     } catch (error) {
         req.flash("error", "sản phẩm không tồn tại");
         res.redirect("/admin/products");
@@ -203,7 +212,8 @@ module.exports.editPATCH = async (req, res) => {
         discountPercentage: parseFloat(req.body.discountPercentage),
         stock: parseInt(req.body.stock),
         status: req.body.status,
-        position: parseInt(req.body.position)
+        position: parseInt(req.body.position),
+        Type: req.body.Type
     }
     if (req.files.thumbnail !== undefined) {
         var myPromiseUpload = upLoadToCloud(req.files.thumbnail[0].buffer);
@@ -213,6 +223,8 @@ module.exports.editPATCH = async (req, res) => {
             res.redirect("/admin/products");
         })
     }
+    await modelPro.updateOne({ _id: id }, newData);
+    res.redirect("/admin/products");
 }
 module.exports.detail = async (req, res) => {
     var id = req.params.id;
@@ -222,8 +234,10 @@ module.exports.detail = async (req, res) => {
     }
     try {
         var Data = await modelPro.findOne(condition);
+        var dataType = await modelType.find({ deleted: false });
         res.render("admin/pages/products/detail.pug", {
-            data: Data
+            data: Data,
+            dataType: dataType
         });
     } catch (error) {
         req.flash("error", "Sản phẩm không tồn tại");

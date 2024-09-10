@@ -32,7 +32,13 @@ mixin checkProducts(data)
 
 mixin changeOneStatus(data)
     td 
-        if(data[i].status == "active")
-            a(href="#" class="badge bg-success", id=data[i].id, status = "active") Hoạt động
+        if(role.permissions.includes("DSSP_SUA"))
+            if(data[i].status == "active")
+                a(href="#" class="badge bg-success", id=data[i].id, status = "active") Hoạt động
+            else
+                a(href="#" class="badge bg-danger", id=data[i].id, status = "inactive") Dừng hoạt động
         else
-            a(href="#" class="badge bg-danger", id=data[i].id, status = "inactive") Dừng hoạt động
+            if(data[i].status == "active")
+                div(class="badge bg-success") Hoạt động
+            else
+                div(class="badge bg-danger") Dừng hoạt động

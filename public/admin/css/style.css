@@ -57,3 +57,16 @@
 .disable{
     display: none;
 }
+
+
+
+
+
+/* Con chuột */
+/* chú ý ảnh < 128x128 px thì mới hiển thị được */
+/* 
+body không đủ dùng * để áp dụng trên toàn bộ web
+*/
+*{
+    cursor: url("./../image/bro.png"), auto;
+}

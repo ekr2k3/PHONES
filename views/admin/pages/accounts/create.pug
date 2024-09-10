@@ -1,0 +1,38 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    h1 Thêm tài khoản
+    +alert-flash(messages.error)
+    form(action=prefix + "/accounts/create", method="post", enctype="multipart/form-data")
+        .mb-3 
+            lable(for="f1",  class="form-label") Họ và tên*
+            input(type="text", name="fullname" , id="f1", class="form-control")
+        .mb-3
+            label(for="f2", class="form-label") email*
+            input(name="email", id="f2", class="form-control", type="email")
+        .mb-3 
+            label(for="f3", class="form-label") Mật khẩu*
+            input(type="password", name="password", id="f3", class="form-control")
+        .mb-3 
+            label(for="f4", class="form-label") Số điện thoại
+            input(type="text", name="phone", id="f4", class="form-control")
+        .mb-3 
+            label(for="f6", class="form-label") avatar
+            input(type="file", name="avata", id="f6", class="form-control", accept="image/*")
+            img(src="", alt="", id="preview", style="width: 7vw; height:auto; margin-top:10px;")
+        .mb-3 
+            label(for="f7", class="form-label") Vai trò (phân quyền)
+            select(name="role_id", id="f7")
+                option(value="" hidden) -- chọn vai trò --
+                -for(var i = 0; i<d.length; i++)
+                    option(value=d[i]._id) #{d[i].title}
+        .form-check.form-check-inline
+            input(type="radio", name="status", class="form-check-input", value="active", id="f8")
+            label(for="f8", class="form-check-label") Hoạt động
+        .form-check.form-check-inline
+            input(type="radio", name="status", class="form-check-input", value="inactive", id="f9")
+            label(for="f9", class="form-check-label") Dừng hoạt động
+        .mb-3
+            button(type="submit", class="btn btn-primary") Gửi
+    script(src="/admin/js/preview-an-image.js")

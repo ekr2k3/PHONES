@@ -1,0 +1,25 @@
+extends ../../layouts/default.pug
+
+block main
+    a(href="/admin/role/create" class="btn btn-primary") Thêm
+
+    .card.mb-3 
+        .card-header Danh sách nhóm quyền
+        .card-body
+            table.table.table-hover.table-sm 
+                thead 
+                    tr 
+                        th Stt
+                        th Name
+                        th Mô tả ngắn
+                        th Action
+                tbody
+                    -for(var i = 0; i < d.length; i++)
+                        tr
+                            td #{i+1}
+                            td #{d[i].title}
+                            td !{d[i].description}
+                            td
+                                button(class="btn btn-danger", delete-button, id=d[i]._id) xoa 
+                                a(class="btn btn-warning", edit-button, id=d[i]._id , href="/admin/role/edit/" + d[i]._id) sua
+                                a(href="#", class="btn btn-secondary") Chi tiết

@@ -1,7 +1,10 @@
 header.header
     .container-fluid 
-        .row-align-items-center 
+        .row.align-items-center 
             .col-3 
                 .inner-logo 
                     a(href=prefix + "/dashboard") ADMIN 
             .col-9
+                .d-grid.gap-2.d-md-flex.justify-content-md-end
+                    //- class bootsrap để nút lệch về bên phải
+                    a(href=prefix + "/auth/logout", class="btn btn-danger") Đăng xuất
